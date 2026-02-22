@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request
 from flask_mail import Mail, Message
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # Flask-Mail config (Office 365 / Outlook)
 app.config['MAIL_SERVER'] = 'smtp.office365.com'
