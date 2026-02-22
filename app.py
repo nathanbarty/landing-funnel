@@ -2,10 +2,10 @@ import os
 from flask import Flask, render_template, request
 from flask_mail import Mail, Message
 
-app = Flask(__name__)
+app = Flask(_name_)
 
-# --- Flask-Mail configuration (optional) ---
-app.config['MAIL_SERVER'] = 'smtp.office365.com'  # Outlook SMTP
+# Flask-Mail config (Office 365 / Outlook)
+app.config['MAIL_SERVER'] = 'smtp.office365.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
@@ -13,33 +13,32 @@ app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
 
 mail = Mail(app)
 
-# --- Routes ---
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    return "Hello! Your landing page is live on Railway."
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        phone = request.form.get("phone")
 
-@app.route("/contact", methods=["POST"])
-def contact():
-    name = request.form.get("name")
-    email = request.form.get("email")
-    message = request.form.get("message")
+        if not (name and email and phone):
+            return "Missing fields", 400
 
-    if not (name and email and message):
-        return "Missing fields", 400
+        try:
+            msg = Message(
+                subject=f"New Assessment Request: {name}",
+                sender=app.config['MAIL_USERNAME'],
+                recipients=[app.config['MAIL_USERNAME']],
+                body=f"Name: {name}\nEmail: {email}\nPhone: {phone}"
+            )
+            mail.send(msg)
+            return render_template("thanks.html", name=name)
+        except Exception as e:
+            # Still show the page, but log the error
+            print(f"Email error: {e}")
+            return render_template("landing_page.html")
 
-    try:
-        msg = Message(
-            subject=f"New message from {name}",
-            sender=app.config['MAIL_USERNAME'],
-            recipients=[app.config['MAIL_USERNAME']],
-            body=f"From: {name} <{email}>\n\n{message}"
-        )
-        mail.send(msg)
-        return "Message sent successfully!", 200
-    except Exception as e:
-        return f"Error sending message: {str(e)}", 500
+    return render_template("landing_page.html")
 
-# --- Entry point for Railway ---
-if __name__ == "__main__":
+if _name_ == "_main_":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
