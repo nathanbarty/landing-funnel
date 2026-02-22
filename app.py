@@ -1,82 +1,45 @@
-from flask import Flask, request, render_template, redirect
-import smtplib, time, threading
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import os
-from dotenv import load_dotenv
+from flask import Flask, render_template, request
+from flask_mail import Mail, Message
 
-# Load environment variables from .env
-load_dotenv()
 app = Flask(__name__)
 
-# Email and Calendly link from .env
-EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
-CALENDLY_LINK = os.getenv("CALENDLY_LINK")
+# --- Flask-Mail configuration (optional) ---
+app.config['MAIL_SERVER'] = 'smtp.office365.com'  # Outlook SMTP
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
+app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
 
-# 5-step automated email sequence
-email_sequence = [
-    {
-        "subject": "Your Flexible Side Income Assessment",
-        "delay": 0,
-        "body": "Hi {name},\n\nThanks for signing up!\n\nBook your free 10-minute assessment here: {calendly}\n\nNo pressure — just clarity on what could work for you.\n\nCheers,\n[Your Name]"
-    },
-    {
-        "subject": "Have you had a chance to book your call?",
-        "delay": 24*60*60,  # 24 hours
-        "body": "Hi {name},\n\nI noticed you haven’t booked your free assessment yet.\n\nEven 10 minutes can show you whether flexible income fits your schedule.\n\nBook your time here: {calendly}\n\nTalk soon,\n[Your Name]"
-    },
-    {
-        "subject": "Not sure if this is right for you?",
-        "delay": 48*60*60,  # 48 hours
-        "body": "Hi {name},\n\nBooking your call doesn’t commit you to anything. It’s just a 10-minute assessment to see if it works for you.\n\nReserve your spot: {calendly}\n\nCheers,\n[Your Name]"
-    },
-    {
-        "subject": "Here’s what others are saying…",
-        "delay": 48*60*60,
-        "body": "Hi {name},\n\nSome people who started exactly like you have already found a path to flexible income.\n\nEven if you’re unsure, a 10-minute call can give you clarity.\n\nBook your call here: {calendly}\n\n[Your Name]"
-    },
-    {
-        "subject": "Last chance to book your free assessment",
-        "delay": 48*60*60,
-        "body": "Hi {name},\n\nThis is your final reminder to schedule your free flexible income assessment.\n\nReserve your spot now: {calendly}\n\n[Your Name]"
-    }
-]
+mail = Mail(app)
 
-# Function to send email via Outlook SMTP
-def send_email(to_email, subject, body):
-    msg = MIMEMultipart()
-    msg['From'] = EMAIL_ADDRESS
-    msg['To'] = to_email
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-    
-    # Outlook SMTP settings
-    with smtplib.SMTP('smtp.office365.com', 587) as server:
-        server.starttls()  # TLS encryption
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.send_message(msg)
+# --- Routes ---
+@app.route("/")
+def home():
+    return "Hello! Your landing page is live on Railway."
 
-# Function to run email sequence in background thread
-def start_email_sequence(name, email):
-    def run_sequence():
-        for e in email_sequence:
-            body = e['body'].format(name=name, calendly=CALENDLY_LINK)
-            send_email(email, e['subject'], body)
-            time.sleep(e['delay'])
-    threading.Thread(target=run_sequence).start()
+@app.route("/contact", methods=["POST"])
+def contact():
+    name = request.form.get("name")
+    email = request.form.get("email")
+    message = request.form.get("message")
 
-# Landing page route
-@app.route('/', methods=['GET', 'POST'])
-def landing_page():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        phone = request.form['phone']
-        start_email_sequence(name, email)
-        return redirect(CALENDLY_LINK)
-    return render_template('landing_page.html')
+    if not (name and email and message):
+        return "Missing fields", 400
 
-# Run locally
-if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        msg = Message(
+            subject=f"New message from {name}",
+            sender=app.config['MAIL_USERNAME'],
+            recipients=[app.config['MAIL_USERNAME']],
+            body=f"From: {name} <{email}>\n\n{message}"
+        )
+        mail.send(msg)
+        return "Message sent successfully!", 200
+    except Exception as e:
+        return f"Error sending message: {str(e)}", 500
+
+# --- Entry point for Railway ---
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
