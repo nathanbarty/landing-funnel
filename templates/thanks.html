@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanks – Assessment Received</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<main style="max-width: 720px; margin: 60px auto; padding: 20px; text-align: center;">
+  <h1>✅ Thanks{{ ", " + name if name else "" }}</h1>
+  <p>Your free assessment request has been received.</p>
+  <p>We’ll review your details and be in touch shortly.</p>
+
+  <p style="margin-top: 40px;">
+    <a href="/">← Back to home</a>
+  </p>
+</main>
+
+</body>
+</html>

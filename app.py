@@ -23,19 +23,11 @@ def home():
         if not (name and email and phone):
             return "Missing fields", 400
 
-        try:
-            msg = Message(
-                subject=f"New Assessment Request: {name}",
-                sender=app.config['MAIL_USERNAME'],
-                recipients=[app.config['MAIL_USERNAME']],
-                body=f"Name: {name}\nEmail: {email}\nPhone: {phone}"
-            )
-            mail.send(msg)
-            return render_template("thanks.html", name=name)
-        except Exception as e:
-            # Still show the page, but log the error
-            print(f"Email error: {e}")
-            return render_template("landing_page.html")
+        # Log lead (visible in Railway logs)
+        print(f"New lead: {name} | {email} | {phone}")
+
+        # Show thank-you page
+        return render_template("thanks.html", name=name)
 
     return render_template("landing_page.html")
 
