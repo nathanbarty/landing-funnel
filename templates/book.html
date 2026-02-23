@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
   <style>
-    /* Simple modal popup */
-    .modal-overlay{
+    /* Booking complete modal */
+    .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(17, 24, 39, 0.55);
@@ -20,33 +20,46 @@
       padding: 16px;
       z-index: 2000;
     }
-    .modal{
+
+    .modal {
       width: 100%;
       max-width: 560px;
-      background: #fff;
+      background: #ffffff;
       border-radius: 16px;
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
-      padding: 22px;
+      padding: 24px;
       text-align: center;
     }
-    .modal h2{ margin: 0 0 10px 0; }
-    .modal p{ margin: 0 0 14px 0; color: var(--muted); }
-    .modal .btn{
+
+    .modal h2 {
+      margin: 0 0 12px 0;
+    }
+
+    .modal p {
+      margin: 0 0 14px 0;
+      color: var(--muted);
+    }
+
+    .modal .btn {
       display: inline-block;
+      width: 100%;
+      max-width: 360px;
+      margin-top: 6px;
       padding: 0.9rem 1.2rem;
       border-radius: 12px;
       background: var(--primary);
-      color: #fff;
-      text-decoration: none;
+      color: #ffffff;
       font-weight: 900;
-      cursor: pointer;
       border: none;
-      width: 100%;
-      max-width: 360px;
+      cursor: pointer;
     }
-    .modal .btn:hover{ background: var(--primary-hover); }
-    .modal .small{
+
+    .modal .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .modal .small {
       margin-top: 10px;
       font-size: 0.9rem;
       color: var(--muted);
@@ -68,17 +81,19 @@
   <h1>Pick a date and time ✅</h1>
 
   <p class="lead">
-    You’ll speak directly with <strong>Lucy or Nathan</strong>. Choose a slot that suits you.
+    You’ll speak directly with <strong>Lucy or Nathan</strong>.
+    Choose a time that suits you.
   </p>
 
   <p class="trust-line">
-    After booking, you’ll receive confirmation details by email.
+    Once booked, you’ll receive confirmation details by email.
   </p>
 </header>
 
 <main class="site-main">
   <section class="card">
-    <!-- Calendly Inline Widget (official embed) -->
+
+    <!-- Calendly Inline Widget -->
     <div
       class="calendly-inline-widget"
       data-url="https://calendly.com/lifeonyourtermsuk/1hr?name={{ name|urlencode }}&email={{ email|urlencode }}"
@@ -86,29 +101,34 @@
     </div>
 
     <script async src="https://assets.calendly.com/assets/external/widget.js"></script>
+
   </section>
 </main>
 
-<!-- Booking complete popup -->
+<!-- Booking complete modal -->
 <div class="modal-overlay" id="bookingCompleteModal" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="completeTitle">
-    <h2 id="completeTitle">All complete ✅</h2>
-    <p>Your booking is confirmed.</p>
-    <p>Please check your email for the appointment details (and your calendar invite).</p>
+    <h2 id="completeTitle">All set ✅</h2>
+
+    <p>Your booking has been confirmed.</p>
+
+    <p>
+      Please check your email for full details, including your calendar invite and next steps.
+    </p>
 
     <button class="btn" id="closePageBtn" type="button">
-      All complete — close this page
+      All complete — you can now close this page
     </button>
 
     <div class="small">
-      If you don’t see the email, check your spam/junk folder.
+      If you don’t see the email, please check your spam or junk folder.
     </div>
   </div>
 </div>
 
 <script>
-  // Show modal when Calendly reports an event was scheduled
-  window.addEventListener("message", function(e) {
+  // Show modal when Calendly confirms booking
+  window.addEventListener("message", function (e) {
     if (e.data && e.data.event === "calendly.event_scheduled") {
       const modal = document.getElementById("bookingCompleteModal");
       modal.style.display = "flex";
@@ -116,15 +136,13 @@
     }
   });
 
-  // "Close page" button
-  document.getElementById("closePageBtn").addEventListener("click", function() {
-    // Try to close the tab (works reliably only if tab was opened by JS)
+  // Close page button (with graceful fallback)
+  document.getElementById("closePageBtn").addEventListener("click", function () {
     window.close();
 
-    // Fallback if browser blocks closing:
     const modal = document.getElementById("bookingCompleteModal");
     modal.querySelector(".small").textContent =
-      "You can now safely close this tab. Your email confirmation has the details.";
+      "You can now safely close this tab. Your email contains all appointment details.";
   });
 </script>
 
