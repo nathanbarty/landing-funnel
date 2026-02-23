@@ -1,13 +1,11 @@
-<!-- templates/landing_page.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Life On Your Terms UK | Savings &amp; Earnings Eligibility Checker</title>
-  <meta name="description" content="A quick, no-pressure checker to see if you may qualify for bill savings, earning extra income, or both. UK residents aged 18+ only.">
+  <title>Life On Your Terms UK | Savings & Earnings Eligibility Checker</title>
+  <meta name="description" content="Check your eligibility for bill savings, earning extra income, or both. UK residents aged 18+ only.">
   <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
-  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -32,12 +30,13 @@
   </h1>
 
   <p class="lead">
-    A quick, no-pressure checker to see what you could qualify for, whether your goal is lowering household bills,
+    A quick, no-pressure checker to see what you could qualify for — whether your goal is lowering bills,
     earning alongside your current commitments, or both.
   </p>
 
   <p class="trust-line">
-    Run by <strong>Lucy &amp; Nathan</strong>. If you book a call, you’ll speak directly with us. No call centres, no pushy sales.
+    Run by <strong>Lucy &amp; Nathan</strong>. If you book a call, you’ll speak directly with us.
+    No call centres. No pressure.
   </p>
 
   <div class="pill-row">
@@ -54,20 +53,20 @@
   <section class="card">
     <h2>Start Your Free Eligibility Checker</h2>
 
-    <form id="assessment-form" class="fade-in" action="/" method="post" novalidate>
+    <form id="assessment-form" class="fade-in" action="/" method="post">
 
       <label for="name">Full Name</label>
-      <input id="name" type="text" name="name" required placeholder="Your full name" autocomplete="name">
+      <input id="name" type="text" name="name" required placeholder="Your full name">
 
       <label for="email">Email</label>
-      <input id="email" type="email" name="email" required placeholder="you@example.com" autocomplete="email">
+      <input id="email" type="email" name="email" required placeholder="you@example.com">
 
       <label for="phone">Phone Number</label>
-      <input id="phone" type="tel" name="phone" required placeholder="07xxx xxxxxx" autocomplete="tel">
+      <input id="phone" type="tel" name="phone" required placeholder="07xxx xxxxxx">
 
       <label for="interest">What are you interested in?</label>
       <select id="interest" name="interest" required>
-        <option value="" selected disabled>Select one…</option>
+        <option value="" disabled selected>Select one…</option>
         <option value="savings">Saving money on bills</option>
         <option value="earning">Earning extra income</option>
         <option value="both">Both savings and earning</option>
@@ -77,7 +76,7 @@
 
       <p class="fineprint"><strong>Eligibility:</strong> UK residents aged 18+ only.</p>
       <p class="fineprint">
-        We respect your privacy. Your details are used solely to contact you about your checker and booking.
+        Your details are used only to contact you about your eligibility and booking.
       </p>
 
     </form>
@@ -87,11 +86,23 @@
   <section class="card">
     <h2>How it Works</h2>
     <ol class="steps">
-      <li>Complete the quick checker (1–2 minutes)</li>
-      <li>Select whether you’re interested in savings, earning, or both</li>
-      <li>Book a time to speak with Lucy or Nathan</li>
-      <li>Get a clear breakdown of what you may qualify for and next steps</li>
+      <li>Complete the checker (1–2 minutes)</li>
+      <li>Select savings, earning, or both</li>
+      <li>Book a call with Lucy or Nathan</li>
+      <li>Get clear, honest guidance</li>
     </ol>
+  </section>
+
+  <!-- What happens after -->
+  <section class="card">
+    <h2>What happens after the call?</h2>
+    <ul class="ticks">
+      <li>You’ll speak directly with Lucy or Nathan</li>
+      <li>We’ll explain what you may qualify for</li>
+      <li>If it’s not a fit, we’ll say so</li>
+      <li>There’s no obligation to proceed</li>
+    </ul>
+    <p class="fineprint">The goal is clarity, not pressure.</p>
   </section>
 
   <!-- Why UW -->
@@ -99,8 +110,8 @@
     <h2>Why people choose UW</h2>
     <ul class="ticks">
       <li>Support for savings customers and earning partners</li>
-      <li>Clear information, no pressure</li>
-      <li>Options that work around real-life schedules</li>
+      <li>No pushy sales or hype</li>
+      <li>Options that fit real life</li>
       <li>UK-based and privacy-respecting</li>
     </ul>
   </section>
@@ -109,64 +120,4 @@
   <section class="card">
     <h2>Frequently Asked Questions</h2>
 
-    <p><strong>Is this only for people wanting extra income?</strong><br>
-      No. It’s for anyone who wants to check eligibility for savings, earning, or both.
-    </p>
-
-    <p><strong>Is this a sales pitch?</strong><br>
-      No. The goal is clarity. If something isn’t a fit, we’ll tell you.
-    </p>
-
-    <p><strong>I’m busy, is it time consuming?</strong><br>
-      The form takes 1–2 minutes, and booking a call is fully flexible.
-    </p>
-
-    <p><strong>Who will I speak to?</strong><br>
-      Lucy or Nathan — we attend all calls ourselves.
-    </p>
-
-    <p><strong>Who is eligible?</strong><br>
-      UK residents aged 18+ only.
-    </p>
-  </section>
-
-</main>
-
-<footer class="site-footer">
-  <p class="footer-title">Ready to check what you could qualify for?</p>
-  <a href="#assessment-form" class="footer-cta">Start the Checker →</a>
-  <p class="footer-note">Life On Your Terms UK • UW • UK only • 18+</p>
-</footer>
-
-<!-- Sticky CTA -->
-<a href="#assessment-form" class="sticky-cta">Start the Checker →</a>
-
-<!-- Smooth scroll + fade-in -->
-<script>
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-  });
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-  const form = document.querySelector('.fade-in');
-  if (!form) return;
-
-  function reveal() {
-    const rect = form.getBoundingClientRect();
-    if (rect.top < window.innerHeight - 120) {
-      form.classList.add('visible');
-      window.removeEventListener('scroll', reveal);
-    }
-  }
-
-  window.addEventListener('scroll', reveal);
-  reveal();
-});
-</script>
-
-</body>
-</html>
+    <p><strong>Is this only for earning?</strong><br
