@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mail import Mail, Message
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # REQUIRED for session lock (/book protection). Set SECRET_KEY in Railway Variables.
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-only-change-me")
@@ -83,6 +83,6 @@ def reset():
     session.clear()
     return redirect(url_for("home"))
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
