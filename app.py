@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mail import Mail, Message
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # -------------------------------------------------
 # REQUIRED: Secret key for sessions (Railway variable recommended)
@@ -93,6 +93,6 @@ def reset():
 # -------------------------------------------------
 # Local run entry point (Gunicorn ignores this)
 # -------------------------------------------------
-if _name_ == "_main_":
+if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
