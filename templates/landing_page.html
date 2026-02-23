@@ -1,13 +1,14 @@
+<!-- templates/landing_page.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Life On Your Terms UK | Flexible Side Income Assessment</title>
-  <meta name="description" content="A free, no-pressure assessment to see if a flexible side income fits around your commitments. UK residents aged 18+ only.">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Life On Your Terms UK | Savings &amp; Earnings Eligibility Checker</title>
+  <meta name="description" content="A quick, no-pressure checker to see if you may qualify for bill savings, earning extra income, or both. UK residents aged 18+ only.">
   <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
   <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
@@ -19,23 +20,29 @@
     <div class="logo-mark">UW</div>
     <div class="logo-text">
       <div class="logo-name">Life On Your Terms UK</div>
-      <div class="logo-tagline">Flexible Side Income Assessment</div>
+      <div class="logo-tagline">Savings &amp; Earnings Eligibility Checker</div>
     </div>
   </div>
 
-  <h1>See if a flexible side income fits around your life</h1>
+  <h1>
+    Check your eligibility to
+    <span class="highlight-primary">save money</span>
+    and/or
+    <span class="highlight-accent">earn extra income</span>
+  </h1>
 
   <p class="lead">
-    A free, no-pressure assessment to help you understand realistic options that work around your existing commitments.
+    A quick, no-pressure checker to see what you could qualify for, whether your goal is lowering household bills,
+    earning alongside your current commitments, or both.
   </p>
 
   <p class="trust-line">
-    Run by <strong>Lucy &amp; Nathan</strong>. If you book a call, you’ll speak directly with us — no sales teams or hand-offs.
+    Run by <strong>Lucy &amp; Nathan</strong>. If you book a call, you’ll speak directly with us. No call centres, no pushy sales.
   </p>
 
   <div class="pill-row">
-    <span class="pill">Free assessment</span>
-    <span class="pill">No hype, no pressure</span>
+    <span class="pill">Bill savings check</span>
+    <span class="pill">Earnings eligibility</span>
     <span class="pill">UK residents 18+ only</span>
   </div>
 
@@ -45,24 +52,32 @@
 
   <!-- Form -->
   <section class="card">
-    <h2>Start Your Free Assessment</h2>
+    <h2>Start Your Free Eligibility Checker</h2>
 
     <form id="assessment-form" class="fade-in" action="/" method="post" novalidate>
 
       <label for="name">Full Name</label>
-      <input id="name" type="text" name="name" required placeholder="Your full name">
+      <input id="name" type="text" name="name" required placeholder="Your full name" autocomplete="name">
 
       <label for="email">Email</label>
-      <input id="email" type="email" name="email" required placeholder="you@example.com">
+      <input id="email" type="email" name="email" required placeholder="you@example.com" autocomplete="email">
 
       <label for="phone">Phone Number</label>
-      <input id="phone" type="tel" name="phone" required placeholder="07xxx xxxxxx">
+      <input id="phone" type="tel" name="phone" required placeholder="07xxx xxxxxx" autocomplete="tel">
 
-      <button type="submit">Continue to booking →</button>
+      <label for="interest">What are you interested in?</label>
+      <select id="interest" name="interest" required>
+        <option value="" selected disabled>Select one…</option>
+        <option value="savings">Saving money on bills</option>
+        <option value="earning">Earning extra income</option>
+        <option value="both">Both savings and earning</option>
+      </select>
+
+      <button type="submit">Continue →</button>
 
       <p class="fineprint"><strong>Eligibility:</strong> UK residents aged 18+ only.</p>
       <p class="fineprint">
-        We respect your privacy. Your details are used solely to contact you about your assessment and booking.
+        We respect your privacy. Your details are used solely to contact you about your checker and booking.
       </p>
 
     </form>
@@ -72,10 +87,10 @@
   <section class="card">
     <h2>How it Works</h2>
     <ol class="steps">
-      <li>Fill out the quick form (1–2 minutes)</li>
-      <li>Choose a date and time to speak with Lucy or Nathan</li>
-      <li>Get a clear, honest breakdown of options</li>
-      <li>Decide your next steps with zero pressure</li>
+      <li>Complete the quick checker (1–2 minutes)</li>
+      <li>Select whether you’re interested in savings, earning, or both</li>
+      <li>Book a time to speak with Lucy or Nathan</li>
+      <li>Get a clear breakdown of what you may qualify for and next steps</li>
     </ol>
   </section>
 
@@ -83,9 +98,9 @@
   <section class="card">
     <h2>Why people choose UW</h2>
     <ul class="ticks">
-      <li>Direct support from Lucy &amp; Nathan</li>
-      <li>No pushy sales or unrealistic promises</li>
-      <li>Flexible options explained clearly</li>
+      <li>Support for savings customers and earning partners</li>
+      <li>Clear information, no pressure</li>
+      <li>Options that work around real-life schedules</li>
       <li>UK-based and privacy-respecting</li>
     </ul>
   </section>
@@ -94,29 +109,37 @@
   <section class="card">
     <h2>Frequently Asked Questions</h2>
 
+    <p><strong>Is this only for people wanting extra income?</strong><br>
+      No. It’s for anyone who wants to check eligibility for savings, earning, or both.
+    </p>
+
     <p><strong>Is this a sales pitch?</strong><br>
-      No. This is simply to see if a flexible side income is a good fit.</p>
+      No. The goal is clarity. If something isn’t a fit, we’ll tell you.
+    </p>
 
     <p><strong>I’m busy, is it time consuming?</strong><br>
-      The form takes 1–2 minutes, and booking is fully flexible.</p>
-
-    <p><strong>Do I need experience?</strong><br>
-      No. We focus on realistic options that fit your situation.</p>
+      The form takes 1–2 minutes, and booking a call is fully flexible.
+    </p>
 
     <p><strong>Who will I speak to?</strong><br>
-      Lucy or Nathan — we attend all calls ourselves.</p>
+      Lucy or Nathan — we attend all calls ourselves.
+    </p>
+
+    <p><strong>Who is eligible?</strong><br>
+      UK residents aged 18+ only.
+    </p>
   </section>
 
 </main>
 
 <footer class="site-footer">
-  <p class="footer-title">Ready to see if it could work for you?</p>
-  <a href="#assessment-form" class="footer-cta">Start My Free Assessment →</a>
+  <p class="footer-title">Ready to check what you could qualify for?</p>
+  <a href="#assessment-form" class="footer-cta">Start the Checker →</a>
   <p class="footer-note">Life On Your Terms UK • UW • UK only • 18+</p>
 </footer>
 
 <!-- Sticky CTA -->
-<a href="#assessment-form" class="sticky-cta">Get My Free Assessment →</a>
+<a href="#assessment-form" class="sticky-cta">Start the Checker →</a>
 
 <!-- Smooth scroll + fade-in -->
 <script>
